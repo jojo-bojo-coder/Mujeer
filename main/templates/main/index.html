@@ -1,0 +1,1910 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if LANGUAGE_CODE == 'ar' %}
+            شركة مجير لإدارة وتشغيل الفنادق
+        {% else %}
+            Mujeer Hotel Management and Operations Company
+        {% endif %}
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI','Tajawal', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            background: #ffffff;
+        }
+
+        /* Modern color palette from logo */
+        :root {
+            --primary-dark: #3c5664;
+            --primary-medium: #4a6b7a;
+            --primary-light: #5e8191;
+            --accent-gold: #d4af73;
+            --accent-warm: #c9a068;
+            --neutral-light: #f8f9fa;
+            --neutral-medium: #e9ecef;
+            --text-dark: #2c3e50;
+            --text-medium: #6c757d;
+            --text-light: #adb5bd;
+            --white: #ffffff;
+            --shadow-light: rgba(60, 86, 100, 0.1);
+            --shadow-medium: rgba(60, 86, 100, 0.2);
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(248, 249, 250, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            height: 80px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid var(--neutral-medium);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        nav.scrolled {
+            background: rgba(248, 249, 250, 0.98);
+            height: 70px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-image {
+            width: 180px;
+            height: 60px;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .logo-container:hover .logo-image {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 2.5rem;
+            flex-wrap: nowrap;
+            overflow: visible;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+
+
+        .nav-links a:hover {
+            color: var(--primary-dark);
+            background: rgba(60, 86, 100, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .nav-links a:hover::before {
+            width: 80%;
+        }
+
+        /* Language Dropdown */
+        .language-dropdown {
+            position: relative;
+            display: inline-block;
+            overflow: visible;
+        }
+
+        .language-btn {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-btn:hover {
+            background: var(--accent-gold);
+            color: white;
+        }
+
+        .language-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        .language-btn:hover::after {
+            width: 100%;
+        }
+
+        .language-dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--white);
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 9999;
+    top: calc(100% + 5px); /* Add 5px gap below button */
+    {% if LANGUAGE_CODE == 'ar' %}
+    left: 0;
+    right: auto;
+    {% else %}
+    right: 0;
+    left: auto;
+    {% endif %}
+    overflow: visible; /* Add this */
+    border: 1px solid var(--neutral-medium);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.language-dropdown-content.show {
+    display: block !important; /* Add !important */
+    opacity: 1 !important;     /* Add !important */
+    transform: translateY(0) !important; /* Add !important */
+}
+
+        .language-dropdown-content form {
+            display: block;
+            width: 100%;
+        }
+
+        .language-dropdown-content button {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-dropdown-content button:hover {
+            background: var(--neutral-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(60, 86, 100, 0.6); /* Dark overlay for better text readability */
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            padding: 0 2rem;
+            animation: heroFadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm), #f4e4bc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm));
+            color: white;
+            padding: 18px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(212, 175, 115, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(212, 175, 115, 0.4);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 4rem;
+            color: var(--text-dark);
+            position: relative;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm));
+            margin: 30px auto;
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--neutral-light);
+            position: relative;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        .about-text {
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px var(--shadow-medium);
+            transition: transform 0.4s ease;
+            animation: slideInRight 0.8s ease forwards;
+        }
+
+        .about-image:hover {
+            transform: translateY(-10px);
+        }
+
+        .about-image-placeholder {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 30% 70%, rgba(212, 175, 115, 0.2) 0%, transparent 50%);
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--neutral-medium);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm));
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 80px var(--shadow-medium);
+            border-color: var(--accent-gold);
+        }
+
+        .service-card h3 {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .service-card p {
+            color: var(--text-medium);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 70% 30%, rgba(212, 175, 115, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(212, 175, 115, 0.08) 0%, transparent 50%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-item {
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            display: block;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-desc {
+            font-size: 1rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .team-member {
+            text-align: center;
+            background: var(--white);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 50px var(--shadow-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--neutral-medium);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px var(--shadow-medium);
+        }
+
+        .team-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-photo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(212, 175, 115, 0.3) 0%, transparent 70%);
+        }
+
+        .team-member h3 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+
+        .team-role {
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .team-desc {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--neutral-light);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            margin-top: 4rem;
+        }
+
+        .contact-info {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px var(--shadow-light);
+            border: 1px solid var(--neutral-medium);
+        }
+
+        .contact-item {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent-gold);
+            background: rgba(212, 175, 115, 0.05);
+            border-radius: 0 16px 16px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateX(5px);
+        }
+
+        .contact-item h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .contact-item p {
+            color: var(--text-medium);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        footer h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-warm));
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        /* Animations */
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .team-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .section {
+                padding: 80px 0;
+            }
+        }
+
+        /* Enhanced visual effects */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(212, 175, 115, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.1;
+            }
+        }
+
+        /* Parallax effect preparation */
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            z-index: -1;
+        }
+
+        /* Modern glassmorphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Smooth transitions for all interactive elements */
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Focus states for accessibility */
+        .cta-button:focus,
+        .nav-links a:focus {
+            outline: 2px solid var(--accent-gold);
+            outline-offset: 2px;
+        }
+        .contact-logo-container {
+            width: 250px;
+            height: 180px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            background: var(--neutral-light); /* Fallback background */
+        }
+
+        .contact-logo {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+
+        }
+
+        .contact-logo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-dark), var(--accent-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [dir="rtl"] .nav-links {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .about-text,
+        [dir="rtl"] .contact-info {
+            text-align: right;
+        }
+
+        [dir="rtl"] .contact-item {
+            border-left: none;
+            border-right: 4px solid var(--accent-gold);
+            border-radius: 16px 0 0 16px;
+        }
+        {% if LANGUAGE_CODE == 'ar' %}
+        body {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .nav-links {
+            flex-direction: row-reverse;
+        }
+
+        .about-grid,
+        .contact-grid {
+            direction: ltr; /* Keep grid layout LTR */
+        }
+
+        .about-text,
+        .contact-info {
+            text-align: right;
+        }
+
+        .language-dropdown-content {
+            right: auto;
+            left: 0;
+        }
+        {% endif %}
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo-container">
+                <div class="logo-image" style="background: url('{% static 'images/cc.png' %}') center/contain no-repeat;"></div>
+            </a>
+            <ul class="nav-links" style="flex-direction: {% if LANGUAGE_CODE == 'ar' %}row{% else %}row{% endif %};">
+                <li><a href="#home">{% if LANGUAGE_CODE == 'ar' %}الرئيسية{% else %}Home{% endif %}</a></li>
+                <li><a href="#about">{% if LANGUAGE_CODE == 'ar' %}من نحن{% else %}About{% endif %}</a></li>
+                <li><a href="#services">{% if LANGUAGE_CODE == 'ar' %}الخدمات{% else %}Services{% endif %}</a></li>
+                <li><a href="#team">{% if LANGUAGE_CODE == 'ar' %}فريقنا{% else %}Team{% endif %}</a></li>
+                <li><a href="#contact">{% if LANGUAGE_CODE == 'ar' %}اتصل بنا{% else %}Contact{% endif %}</a></li>
+                <li class="language-dropdown">
+                    <button class="language-btn">
+                        {% if LANGUAGE_CODE == 'ar' %}
+                            🇸🇦 العربية
+                        {% else %}
+                            🇺🇸 EN
+                        {% endif %}
+                        <span>▼</span>
+                    </button>
+                    <div class="language-dropdown-content">
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="language" value="ar">
+                            <button type="submit">
+                                🇸🇦 العربية
+                            </button>
+                        </form>
+                        <form action="{% url 'set_language' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="language" value="en">
+                            <button type="submit">
+                                🇺🇸 English
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="{% static 'images/5378937-uhd_4096_2160_25fps.mp4' %}" type="video/mp4">
+            <!-- Fallback for browsers that don't support video -->
+            {% if LANGUAGE_CODE == 'ar' %}
+                متصفحك لا يدعم تشغيل الفيديو
+            {% else %}
+                Your browser does not support the video tag
+            {% endif %}
+        </video>
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        <div class="hero-content">
+            <h1>{% if LANGUAGE_CODE == 'ar' %}
+                    شركة مجير لإدارة وتشغيل الفنادق
+                {% else %}
+                    Mujeer Hotel Management and Operations Company
+                {% endif %}</h1>
+            <p>{% if LANGUAGE_CODE == 'ar' %}
+                    شريكك المثالي في صناعة الضيافة وتميز الفنادق
+                {% else %}
+                    Your ideal partner in the hospitality industry and hotel excellence
+                {% endif %}</p>
+            <a href="#about" class="cta-button">
+                {% if LANGUAGE_CODE == 'ar' %}اكتشف التميز{% else %}Discover Excellence{% endif %}
+                <span>→</span>
+            </a>
+        </div>
+    </section>
+
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}
+                    مجير لإدارة وتشغيل الفنادق: رؤية احترافية لنجاح فندقك
+                {% else %}
+                    Mujeer Hotel Management & Operations: A Professional Vision for Your Hotel's Success
+                {% endif %}</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            نقدم حلولاً شاملة لإدارة وتشغيل الفنادق، نمزج بين الخبرة الواسعة والاستراتيجيات المبتكرة لضمان الأداء الأمثل وتعظيم الربحية.
+                        {% else %}
+                            We provide comprehensive hotel management and operational solutions, blending extensive experience with innovative strategies to guarantee peak performance and maximise profitability.
+                        {% endif %}</p>
+                </div>
+                <div class="about-image">
+                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}تميز فندقي{% else %}Hotel Excellence{% endif %}</div>
+                </div>
+            </div>
+
+            <h3 class="section-title">{% if LANGUAGE_CODE == 'ar' %}من نحن؟{% else %}Who Are We?{% endif %}</h3>
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}فريق محترف{% else %}Professional Team{% endif %}</div>
+                </div>
+                <div class="about-text">
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            مجير هي شركة متخصصة في إدارة وتشغيل الفنادق، تجمع بين الخبرة والابتكار لتقديم خدمات ضيافة استثنائية.
+                        {% else %}
+                            Mujeer is a company specialising in hotel management and operations, combining expertise and innovation to deliver exceptional hospitality services.
+                        {% endif %}</p>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            نؤمن بأن نجاح الفندق ينبع من الإدارة المحترفة التي تركز على تجربة الضيف الاستثنائية وتحقيق أعلى عائد مستدام على الاستثمار.
+                        {% else %}
+                            We believe that hotel success stems from professional management focused on an outstanding guest experience and achieving the highest sustainable return on investment.
+                        {% endif %}</p>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            نعمل بشغف وتفانٍ لتطوير الفنادق وتحويلها إلى وجهات مفضلة ومميزة للضيوف من جميع أنحاء العالم.
+                        {% else %}
+                            We work with passion and dedication to develop hotels and transform them into preferred and distinctive destinations for guests from all over the world.
+                        {% endif %}</p>
+                </div>
+            </div>
+
+            <h3 class="section-title">{% if LANGUAGE_CODE == 'ar' %}مجالات تركيزنا{% else %}Our Focus Areas{% endif %}</h3>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}مجير: القيادة في إدارة الفنادق{% else %}Mujeer: Leading Hotel Management{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            نقدم خدمات شاملة لإدارة الفنادق، نضمن تجارب استثنائية للضيوف وعمليات سلسة، من التخطيط الاستراتيجي إلى الإشراف اليومي.
+                        {% else %}
+                            We offer comprehensive hotel management services, ensuring exceptional guest experiences and seamless operations, from strategic planning to daily oversight.
+                        {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}مجير: الكفاءة التشغيلية والربحية{% else %}Mujeer: Operational Efficiency & Profitability{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            نسعى لتعزيز الأداء التشغيلي وتعظيم الإيرادات مع الحفاظ على أعلى معايير الجودة والتميز في الخدمة.
+                        {% else %}
+                            We strive to enhance operational performance and maximise revenue while upholding the highest standards of quality and service excellence.
+                        {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}شركة مجير للفنادق والمنتجعات{% else %}Muajir Hotels and Resorts Company{% endif %}</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            رائدة في إدارة وتشغيل الفنادق والمنتجعات الفاخرة وفقاً للمعايير الدولية.
+                        {% else %}
+                            A leader in the management and operation of luxury hotels and resorts to international standards.
+                        {% endif %}</p>
+
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}فلسفة الشركة{% else %}Company Philosophy{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            فلسفة متكاملة تركز على الابتكار وتقديم خدمات ضيافة استثنائية تتجاوز توقعات الضيوف.
+                        {% else %}
+                            An integrated philosophy focused on innovation and delivering exceptional hospitality services that exceed guest expectations.
+                        {% endif %}</p>
+
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}الخدمات الأساسية{% else %}Core Services{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                            الإدارة والتشغيل الشامل للمنشآت الفندقية، تطوير الأعمال، والصيانة عالية الجودة لضمان التميز التشغيلي.
+                        {% else %}
+                            Comprehensive management and operation of hotel facilities, business development, and high-quality maintenance to ensure operational excellence.
+                        {% endif %}</p>
+                </div>
+                <div class="about-image">
+                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}منتجع فاخر{% else %}Luxury Resort{% endif %}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="section stats">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}خبرتنا في السوق{% else %}Our Market Expertise{% endif %}</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <div class="stat-label">{% if LANGUAGE_CODE == 'ar' %}سنوات من الخبرة{% else %}Years of Experience{% endif %}</div>
+                    <div class="stat-desc">{% if LANGUAGE_CODE == 'ar' %}في إدارة وتشغيل الفنادق بمختلف أحجامها وفئاتها{% else %}in managing and operating hotels of various sizes and categories{% endif %}</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">10+</span>
+                    <div class="stat-label">{% if LANGUAGE_CODE == 'ar' %}سنوات من الخبرة{% else %}Years of Experience{% endif %}</div>
+                    <div class="stat-desc">{% if LANGUAGE_CODE == 'ar' %}متوسط خبرة مدرائنا التنفيذيين{% else %}average experience of our executive managers{% endif %}</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <div class="stat-label">{% if LANGUAGE_CODE == 'ar' %}فندق{% else %}Hotels{% endif %}</div>
+                    <div class="stat-desc">{% if LANGUAGE_CODE == 'ar' %}تم إدارتها بنجاح في مختلف المناطق{% else %}successfully managed across various regions{% endif %}</div>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.9;">{% if LANGUAGE_CODE == 'ar' %}
+                يتمتع فريق الإدارة لدينا بخبرة واسعة في كل من الأسواق العربية والدولية، مع سجل حافل في تعزيز الأداء المالي والتشغيلي للعلامات التجارية المعروفة والفنادق المستقلة.
+            {% else %}
+                Our management team possesses extensive experience in both the Arab and international markets, boasting a proven track record in enhancing the financial and operational performance of well-known brands and independent hotels.
+            {% endif %}</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}قيمنا الأساسية{% else %}Our Core Values{% endif %}</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}التميز في الإدارة{% else %}Excellence in Management{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        تسعى مجير إلى الجمع بين أفضل الممارسات العالمية والفهم المحلي، مما يضمن إدارة فندقية استثنائية.
+                    {% else %}
+                        Mujeer strives combines global best practices with local understanding, ensuring outstanding hotel management.
+                    {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}تجارب ضيافة فريدة{% else %}Unique Hospitality Experiences{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        نقدم تجارب استثنائية للضيوف من خلال خدمات مبتكرة وكفاءة تشغيلية عالية.
+                    {% else %}
+                        We provide exceptional guest experiences through innovative services and high operational efficiency.
+                    {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}نمو استراتيجي مستدام{% else %}Sustainable Strategic Growth{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        نهدف إلى توسيع محفظة فنادقنا وتعزيز قيمة الأصول للملاك من خلال رؤية استراتيجية واضحة.
+                    {% else %}
+                        We aim to expand our hotel portfolio and enhance asset value for owners through a clear strategic vision.
+                    {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="section about">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}خدماتنا المتكاملة{% else %}Our Integrated Services{% endif %}</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}إدارة العمليات اليومية{% else %}Daily Operations Management{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    الاستقبال، الحجوزات، خدمات الغرف، والتنظيف وفقاً للمعايير الدولية.
+                {% else %}
+                    Reception, reservations, room services, and cleaning to international standards.
+                {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}التسويق والمبيعات{% else %}Marketing and Sales{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    استراتيجيات مبتكرة لزيادة إشغال الفندق وتحسين الإيرادات.
+                {% else %}
+                    Innovative strategies to increase hotel occupancy and improve revenue.
+                {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}إدارة الموارد البشرية{% else %}Human Resources Management{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    اختيار وتدريب طاقم الفندق لضمان جودة خدمة متميزة.
+                {% else %}
+                    Selection and training of hotel staff to ensure distinguished service quality.
+                {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}الرقابة المالية{% else %}Financial Control{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    مراقبة التكاليف وتحليل الأداء لضمان ربحية مستدامة ونمو متواصل.
+                {% else %}
+                    Cost monitoring and performance analysis to ensure sustainable profitability and continuous growth.
+                {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}الاستشارات التطويرية{% else %}Development Consultancy{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    تطوير الفنادق وإعادة الهيكلة التشغيلية لتعظيم الاستفادة من الموارد المتاحة.
+                {% else %}
+                    Hotel development and operational restructuring to maximise utilisation of available resources.
+                {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}رؤيتنا ورسالتنا{% else %}Our Vision and Mission{% endif %}</h2>
+            <div class="about-grid">
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}رؤيتنا{% else %}Our Vision{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    أن نصبح الشركة الرائدة في إدارة الفنادق في المنطقة، مع التزامنا الراسخ بالتميز والابتكار المستمر في جميع جوانب العمليات الفندقية.
+                {% else %}
+                    To become the leading hotel management company in the region, with our steadfast commitment to excellence and continuous innovation in all aspects of hotel operations.
+                {% endif %}</p>
+                </div>
+                <div class="service-card" style="background: var(--primary-light); color: white;">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}رسالتنا{% else %}Our Mission{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    تقديم خدمات ضيافة استثنائية تضمن رضا الضيف الكامل وتعظيم قيمة أصول الفنادق لشركائنا من خلال حلول مبتكرة ومستدامة.
+                {% else %}
+                    To provide outstanding hospitality services that ensure complete guest satisfaction and maximise the value of hotel assets for our partners through innovative and sustainable solutions.
+                {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section about">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}قصص نجاحنا{% else %}Our Success Stories{% endif %}</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}01 - فندق النجمة الذهبية{% else %}01 - Golden Star Hotel{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        بعد إعادة الهيكلة التشغيلية وتعزيز العمليات وخدمة العملاء، حقق هذا الفندق زيادة بنسبة 58٪ في الإيرادات خلال 12 شهراً.
+                    {% else %}
+                        After operational restructuring and enhanced operations and customer service, this hotel achieved a 58% increase in revenue within 12 months.
+                    {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}02 - فندق الواحة{% else %}02 - Oasis Hotel{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        حملة تسويق رقمي متطورة رفعت معدلات الإشغال من 60٪ إلى 85٪ في ستة أشهر فقط.
+                    {% else %}
+                        A sophisticated digital marketing campaign boosted occupancy rates from 60% to 85% in just six months.
+                    {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}03 - فندق الكرم{% else %}03 - Al-Karam Hotel{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        برنامج تدريبي شامل للفريق رفع تقييمات الضيوف على منصات الحجز بنسبة 30٪، مما حسن مستويات الخدمة بشكل ملحوظ.
+                    {% else %}
+                        A comprehensive team training programme elevated guest ratings on booking platforms by 30%, significantly improving service levels.
+                    {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="section">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}فريق الإدارة الاستثنائي{% else %}Our Exceptional Management Team{% endif %}</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-photo">{% if LANGUAGE_CODE == 'ar' %}م.ع{% else %}MA{% endif %}</div>
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}محمد علي{% else %}Mohammed Ali{% endif %}</h3>
+                    <div class="team-role">{% if LANGUAGE_CODE == 'ar' %}المدير التنفيذي{% else %}Chief Executive Officer{% endif %}</div>
+                    <p class="team-desc">{% if LANGUAGE_CODE == 'ar' %}
+                        18 سنة خبرة في إدارة الفنادق الفاخرة والمنتجعات الراقية.
+                    {% else %}
+                        18 years experience in managing luxury hotels and high-end resorts.
+                    {% endif %}</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">{% if LANGUAGE_CODE == 'ar' %}س.م{% else %}SM{% endif %}</div>
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}سارة محمود{% else %}Sarah Mahmoud{% endif %}</h3>
+                    <div class="team-role">{% if LANGUAGE_CODE == 'ar' %}مديرة العمليات{% else %}Operations Manager{% endif %}</div>
+                    <p class="team-desc">{% if LANGUAGE_CODE == 'ar' %}
+                        متخصصة في الحفاظ على جودة الخدمة، وتحسين الكفاءة التشغيلية، وإدارة الفريق.
+                    {% else %}
+                        Specialises in maintaining service quality, improving operational efficiency, and team management.
+                    {% endif %}</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">{% if LANGUAGE_CODE == 'ar' %}أ.ح{% else %}AH{% endif %}</div>
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}أحمد حسن{% else %}Ahmed Hassan{% endif %}</h3>
+                    <div class="team-role">{% if LANGUAGE_CODE == 'ar' %}مدير التسويق{% else %}Marketing Manager{% endif %}</div>
+                    <p class="team-desc">{% if LANGUAGE_CODE == 'ar' %}
+                        خبير في التسويق للفنادق والسياحة، واستراتيجية العلامة التجارية.
+                    {% else %}
+                        Expert in marketing for hotels and tourism, and brand strategy.
+                    {% endif %}</p>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; text-align: center; color: var(--text-light);">{% if LANGUAGE_CODE == 'ar' %}
+            فريق دعم شامل من خبراء الموارد البشرية والمالية وخدمة العملاء يعمل بتناغم لضمان تحقيق أعلى معايير الأداء.
+        {% else %}
+            A comprehensive support team of human resources, finance, and customer service experts works in harmony to ensure the highest standards of performance are achieved.
+        {% endif %}</p>
+        </div>
+    </section>
+
+    <section class="section about">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}التزامنا بالجودة والاستدامة{% else %}Our Commitment to Quality and Sustainability{% endif %}</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}المعايير العالمية{% else %}Global Standards{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        تنفيذ المعايير العالمية في جودة الخدمة والضيافة، والالتزام بأفضل الممارسات الدولية المعتمدة.
+                    {% else %}
+                        Implementing global standards in service quality and hospitality, adhering to approved international best practices.
+                    {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}الاستدامة البيئية{% else %}Environmental Sustainability{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        تبني ممارسات مستدامة بيئياً في عمليات الفنادق لحماية البيئة والحفاظ على الموارد.
+                    {% else %}
+                        Adopting environmentally sustainable practices in hotel operations to protect the environment and conserve resources.
+                    {% endif %}</p>
+                </div>
+                <div class="service-card">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}ثقافة الابتكار{% else %}Culture of Innovation{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        تعزيز ثقافة العمل الجماعي والابتكار ضمن فرقنا لتحقيق التطوير المستمر.
+                    {% else %}
+                        Fostering a culture of teamwork and innovation within our teams to achieve continuous development.
+                    {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}مجير لإدارة وتشغيل الفنادق: شريكك المثالي للتميز الفندقي{% else %}Mujeer Hotel Management & Operations: Your Ultimate Partner for Hotel Excellence{% endif %}</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}الخبرة الرائدة في إدارة الفنادق{% else %}Leading Expertise in Hotel Management{% endif %}</h3>
+                    <ul style="list-style: none; padding-left: 0; margin: 1rem 0;">
+                        <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                           {% if LANGUAGE_CODE == 'ar' %}تطوير استراتيجيات التشغيل والنمو{% else %}Developing operational and growth strategies{% endif %}
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                            {% if LANGUAGE_CODE == 'ar' %}تعزيز تجربة الضيف وخدمات الضيافة{% else %}Enhancing guest experience and hospitality services{% endif %}
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                            {% if LANGUAGE_CODE == 'ar' %}إدارة المواهب الفندقية وتدريب الفريق{% else %}Managing hotel talent and team training{% endif %}
+                        </li>
+                        <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                            {% if LANGUAGE_CODE == 'ar' %}تطوير العلامة التجارية والتسويق الفعال{% else %}Brand development and effective marketing{% endif %}
+                        </li>
+                    </ul>
+
+                    <h3>{% if LANGUAGE_CODE == 'ar' %}حلول متكاملة لنجاحك{% else %}Integrated Solutions for Your Success{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        نقدم حلولاً مبتكرة وشاملة لأصحاب الفنادق والمستثمرين الطموحين.
+                    {% else %}
+                        We offer innovative and comprehensive solutions for ambitious hotel owners and investors.
+                    {% endif %}</p>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        نركز على تعظيم الأرباح، وتحقيق أعلى مستويات الأداء التشغيلي والحفاظ على قيمة الأصول.
+                    {% else %}
+                        We focus on maximising profits, achieving the highest levels of operational performance and preserving asset value.
+                    {% endif %}</p>
+                </div>
+                <div class="about-image">
+                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}التميز في الإدارة{% else %}Excellence in Management{% endif %}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section stats">
+        <div class="container">
+            <div class="about-grid" style="color: white;">
+                <div class="about-image">
+                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}فندق حديث{% else %}Modern Hotel{% endif %}</div>
+                </div>
+                <div>
+                    <h3 style="color: var(--accent-gold); margin-bottom: 2rem;">{% if LANGUAGE_CODE == 'ar' %}حلول إدارة وتشغيل الفنادق{% else %}Hotel Management and Operations Solutions{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        تقدم مجير حلولاً شاملة لإدارة وتشغيل الفنادق، مما يضمن أعلى كفاءة وربحية.
+                    {% else %}
+                        Mujeer provides comprehensive solutions for hotel management and operations, ensuring peak efficiency and profitability.
+                    {% endif %}</p>
+
+                    <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem;">{% if LANGUAGE_CODE == 'ar' %}التميز التشغيلي{% else %}Operational Excellence{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        نسعى لتعزيز الأداء التشغيلي للفنادق، مع تركيز قوي على الجودة اللامعة وتجربة الضيف الاستثنائية.
+                    {% else %}
+                        We strive to enhance hotels' operational performance, with a strong focus on impeccable quality and an outstanding guest experience.
+                    {% endif %}</p>
+
+                    <h3 style="color: var(--accent-gold); margin: 2rem 0 1rem;">{% if LANGUAGE_CODE == 'ar' %}شراكة لنجاحك{% else %}A Partnership for Your Success{% endif %}</h3>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                        تضع مجير نجاح شركائها في المقدمة، مكرسة لتحقيق عوائد استثمارية مستدامة.
+                    {% else %}
+                        Mujeer places our partners' success at the forefront, dedicated to achieving sustainable investment returns.
+                    {% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}شركة مجير لإدارة وتشغيل الفنادق{% else %}Mojair Hotel Management & Operations Company{% endif %}</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}1 - الخبرة الرائدة في إدارة الفنادق{% else %}1 - Leading Expertise in Hotel Management{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    تقديم حلول شاملة للإدارة والتشغيل الفندقي بكفاءة عالية واحترافية.
+                {% else %}
+                    Providing comprehensive solutions for efficient and highly professional hotel management and operations.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}2 - تعظيم قيمة الأصول والعوائد{% else %}2 - Maximising Asset Value and Returns{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    من خلال التخطيط الاستراتيجي والتميز التشغيلي لضمان نمو مستدام للملاك.
+                {% else %}
+                    Through strategic planning and operational excellence to ensure sustainable growth for owners.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}3 - حلول مخصصة وشراكات استراتيجية{% else %}3 - Tailored Solutions and Strategic Partnerships{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    فهم احتياجات الشركاء وتقديم خدمات مخصصة لتحقيق أقصى إمكانات الفنادق.
+                {% else %}
+                    Understanding partner needs and offering bespoke services to achieve hotels' maximum potential.
+                {% endif %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section about">
+    <div class="container">
+        <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}التميز في إدارة وتشغيل الفنادق مع مجير{% else %}Excellence in Hotel Management and Operations with Mujeer{% endif %}</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}التميز التشغيلي{% else %}Operational Excellence{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    نقدم حلولاً مبتكرة لتعزيز الأداء التشغيلي وضمان تجربة ضيف استثنائية.
+                {% else %}
+                    We provide innovative solutions to enhance operational performance and ensure an exceptional guest experience.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}النمو الاستراتيجي{% else %}Strategic Growth{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    نطور استراتيجيات نمو مستدامة لزيادة الإيرادات وتعزيز القيمة السوقية للفنادق.
+                {% else %}
+                    We develop sustainable growth strategies to increase revenues and enhance the market value of hotels.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}إعادة الهيكلة والتحول{% else %}Restructuring and Transformation{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    متخصصون في تحويل الفنادق متدنية الأداء إلى كيانات ناجحة ومربحة من خلال الإدارة الفعالة.
+                {% else %}
+                    Specialists in transforming underperforming hotels into successful and profitable entities through effective management.
+                {% endif %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="section">
+    <div class="container">
+        <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}10 تحديات رئيسية في صناعة الفنادق وحلولها{% else %}10 Major Challenges in Hotel Industry & Its Solutions{% endif %}</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}التحديات التي تعالجها مجير{% else %}Challenges Addressed by Mujeer{% endif %}</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                        {% if LANGUAGE_CODE == 'ar' %}تقلبات السوق والتغيرات في سلوك الضيوف{% else %}Market fluctuations and changes in guest behaviour{% endif %}
+                    </li>
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                        {% if LANGUAGE_CODE == 'ar' %}الرقابة الفعالة على التكاليف التشغيلية{% else %}Effective control of operational costs{% endif %}
+                    </li>
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--accent-gold);">•</span>
+                        {% if LANGUAGE_CODE == 'ar' %}ضمان تجارب استثنائية للضيوف وسط المنافسة الشديدة{% else %}Ensuring exceptional guest experiences amidst strong competition{% endif %}
+                    </li>
+                </ul>
+
+                <h3>{% if LANGUAGE_CODE == 'ar' %}الفرص التي تستثمرها مجير{% else %}Opportunities Mujeer Capitalises On{% endif %}</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-light);">•</span>
+                        {% if LANGUAGE_CODE == 'ar' %}تبني أحدث التقنيات لتعزيز الكفاءة والابتكار{% else %}Adopting the latest technologies to enhance efficiency and innovation{% endif %}
+                    </li>
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-light);">•</span>
+                        {% if LANGUAGE_CODE == 'ar' %}التركيز على الاستدامة والممارسات الصديقة للبيئة{% else %}Focusing on sustainability and environmentally friendly practices{% endif %}
+                    </li>
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--primary-light);">•</span>
+                        {% if LANGUAGE_CODE == 'ar' %}توسيع نطاق الأعمال والاستفادة من الأسواق الجديدة{% else %}Expanding business scope and capitalising on new markets{% endif %}
+                    </li>
+                </ul>
+
+                <p style="background: var(--primary-light); color: white; padding: 1.5rem; border-radius: 16px; margin-top: 2rem;">{% if LANGUAGE_CODE == 'ar' %}
+                    تلتزم مجير بتقديم حلول متكاملة تضمن أعلى معايير الجودة والربحية لأصول فنادقك.
+                {% else %}
+                    Mujeer is committed to providing integrated solutions that guarantee the highest standards of quality and profitability for your hotel assets.
+                {% endif %}</p>
+            </div>
+            <div class="about-image">
+                <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}الحلول والابتكار{% else %}Solutions & Innovation{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section stats">
+    <div class="container">
+        <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}مجير: شريكك للإدارة والتشغيل الفندقي المتميز{% else %}Mujair: Your Partner for Distinguished Hotel Management and Operations{% endif %}</h2>
+        <div class="services-grid">
+            <div class="service-card" style="background: var(--primary-dark); color: white; border: none;">
+                <h3 style="color: var(--accent-gold);">{% if LANGUAGE_CODE == 'ar' %}فن الضيافة{% else %}The Art of Hospitality{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    في مجير، الضيافة ليست مجرد خدمة، بل هي فن مخصص لتقديم تجارب لا تنسى وحماية استثماراتك.
+                {% else %}
+                    At Mujair, hospitality is not just a service, but an art dedicated to delivering unforgettable experiences and safeguarding your investments.
+                {% endif %}</p>
+            </div>
+            <div class="service-card" style="background: var(--primary-light); color: white; border: none;">
+                <h3 style="color: white;">{% if LANGUAGE_CODE == 'ar' %}التوازن الأمثل{% else %}Optimal Balance{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    نوازن بمهارة بين تجربة الضيف الاستثنائية والربحية المستدامة لأصحاب الفنادق.
+                {% else %}
+                    We expertly balance between an exceptional guest experience and sustainable profitability for hotel owners.
+                {% endif %}</p>
+            </div>
+            <div class="service-card" style="background: var(--accent-gold); color: white; border: none;">
+                <h3 style="color: white;">{% if LANGUAGE_CODE == 'ar' %}مفاتيح التميز{% else %}Keys to Excellence{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    الاستثمار في أحدث التقنيات وتطوير القدرات البشرية يضمن نجاح العمليات والإجراءات.
+                {% else %}
+                    Investing in cutting-edge technologies and developing human capabilities ensures the success of operations and procedures.
+                {% endif %}</p>
+            </div>
+            <div class="service-card" style="background: var(--primary-medium); color: white; border: none;">
+                <h3 style="color: var(--accent-gold);">{% if LANGUAGE_CODE == 'ar' %}شراكة من أجل الابتكار{% else %}Partnership for Innovation{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    ندعو إلى التعاون داخل صناعة الضيافة لتقديم حلول مبتكرة تحقق التميز المستدام.
+                {% else %}
+                    We advocate for collaboration within the hospitality industry to provide innovative solutions that drive sustainable excellence.
+                {% endif %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="section about">
+    <div class="container">
+        <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}لماذا تختار مجير؟{% else %}Why Choose Mujeer?{% endif %}</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}خبرة مثبتة{% else %}Proven Expertise{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    خبرة مثبتة في تحقيق النمو المستدام للفنادق وتعظيم العائد على الاستثمار.
+                {% else %}
+                    Demonstrated expertise in achieving sustainable hotel growth and maximising return on investment.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}حلول مخصصة{% else %}Customised Solutions{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    حلول مبتكرة ومخصصة تناسب الاحتياجات الفريدة لكل فندق وأهدافه التجارية.
+                {% else %}
+                    Tailored and innovative solutions that fit each hotel's unique needs and commercial objectives.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}شراكة استراتيجية{% else %}Strategic Partnership{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    شراكة استراتيجية طويلة الأجل تركز على الربحية المستدامة والتميز التشغيلي.
+                {% else %}
+                    A long-term strategic partnership focused on sustainable profitability and operational excellence.
+                {% endif %}</p>
+            </div>
+            <div class="service-card">
+                <h3>{% if LANGUAGE_CODE == 'ar' %}دعم مستمر{% else %}Ongoing Support{% endif %}</h3>
+                <p>{% if LANGUAGE_CODE == 'ar' %}
+                    دعم مستمر وتنمية مستدامة لضمان النجاح طويل الأمد وتحقيق الأهداف المرجوة.
+                {% else %}
+                    Continuous support and sustainable development to ensure long-term success and the achievement of desired objectives.
+                {% endif %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="section contact">
+    <div class="container">
+        <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}اتصل بنا{% else %}Contact Us{% endif %}</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>{% if LANGUAGE_CODE == 'ar' %}العنوان{% else %}Address{% endif %}</h4>
+                    <p>{% if LANGUAGE_CODE == 'ar' %}مكة المكرمة، المملكة العربية السعودية{% else %}Makkah, Saudi Arabia{% endif %}</p>
+                </div>
+                <div class="contact-item">
+                    <h4>{% if LANGUAGE_CODE == 'ar' %}الهاتف{% else %}Phone{% endif %}</h4>
+                    <p>966 012 533 5516 - 966 565555479<br>966 555545253</p>
+                </div>
+                <div class="contact-item">
+                    <h4>{% if LANGUAGE_CODE == 'ar' %}البريد الإلكتروني{% else %}Email{% endif %}</h4>
+                    <p>mohammad@mujeer.net</p>
+                </div>
+                <div class="contact-item">
+                    <h4>{% if LANGUAGE_CODE == 'ar' %}الموقع الإلكتروني{% else %}Website{% endif %}</h4>
+                    <p>www.mujeer.net</p>
+                </div>
+            </div>
+            <div style="background: var(--white); padding: 3rem; border-radius: 24px; box-shadow: 0 20px 60px var(--shadow-light); display: flex; align-items: center; justify-content: center; border: 1px solid var(--neutral-medium);">
+                <div style="text-align: center;">
+                    <h3 style="color: var(--text-dark); margin-bottom: 1.5rem; font-size: 1.5rem;">{% if LANGUAGE_CODE == 'ar' %}مجير لإدارة وتشغيل الفنادق{% else %}Mujeer for Hotel Management and Operations{% endif %}</h3>
+                    <p style="color: var(--text-medium); margin-bottom: 2rem; font-size: 1.1rem;">{% if LANGUAGE_CODE == 'ar' %}حيث تتحول الرؤية إلى واقع ضيافة متميز{% else %}Where vision is transformed into a distinguished hospitality reality{% endif %}</p>
+                    <div class="contact-logo-container">
+                        <div class="contact-logo-overlay">
+                            <img src="{% static 'images/WhatsApp Image 2025-09-25 at 11.52.01 PM.jpeg' %}" alt="Mujeer Logo" class="contact-logo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <footer>
+    <div class="footer-content">
+        <h3>MUJEER</h3>
+        <p style="margin-bottom: 1rem; font-size: 1.1rem;">{% if LANGUAGE_CODE == 'ar' %}إدارة وتشغيل الفنادق{% else %}Hotel Management and Operations{% endif %}</p>
+        <p style="opacity: 0.7;">&copy; 2025 {% if LANGUAGE_CODE == 'ar' %}شركة مجير لإدارة وتشغيل الفنادق. جميع الحقوق محفوظة.{% else %}Mujeer Hotel Management and Operations Company. All rights reserved.{% endif %}</p>
+    </div>
+</footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const scrollIndicator = document.getElementById('scrollIndicator');
+
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Update scroll indicator
+            const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            scrollIndicator.style.width = scrollPercent + '%';
+        });
+
+        // Advanced animation on scroll
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+
+                    // Stagger animation for service cards
+                    const cards = entry.target.querySelectorAll('.service-card, .team-member, .stat-item');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, index * 150);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Initialize cards with animation-ready state
+        document.querySelectorAll('.service-card, .team-member, .stat-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Counter animation for stats with easing
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach((counter, index) => {
+                const target = parseInt(counter.textContent);
+                let current = 0;
+                const increment = target / 100;
+                const duration = 2000;
+                const stepTime = duration / 100;
+
+                setTimeout(() => {
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = target + '+';
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.ceil(current) + '+';
+                        }
+                    }, stepTime);
+                }, index * 200);
+            });
+        }
+
+        // Trigger counter animation when stats section is visible
+        const statsSection = document.getElementById('stats');
+        if (statsSection) {
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            statsObserver.observe(statsSection);
+        }
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero');
+            const scrolled = window.pageYOffset;
+            const heroHeight = hero.offsetHeight;
+
+            if (scrolled < heroHeight) {
+                const parallaxSpeed = scrolled * 0.3;
+                hero.style.transform = `translateY(${parallaxSpeed}px)`;
+            }
+        });
+
+        // Add floating animation trigger
+        function triggerFloatingAnimation() {
+            const floatingElements = document.querySelectorAll('.floating-element');
+            floatingElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 2}s`;
+                element.style.opacity = '1';
+            });
+        }
+
+        // Start floating animation after page load
+        window.addEventListener('load', () => {
+            setTimeout(triggerFloatingAnimation, 1000);
+        });
+
+        // Enhanced mobile responsiveness
+        function handleResize() {
+            const width = window.innerWidth;
+            const navLinks = document.querySelector('.nav-links');
+
+            if (width <= 768) {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Call on load
+
+        // Language dropdown functionality
+        // Language dropdown functionality - FIXED VERSION
+document.addEventListener('DOMContentLoaded', function() {
+    // Use querySelector instead of getElementById since there's no ID
+    const languageBtn = document.querySelector('.language-btn');
+    const dropdownContent = document.querySelector('.language-dropdown-content');
+    let isDropdownOpen = false;
+
+    // Check if elements exist before adding event listeners
+    if (!languageBtn || !dropdownContent) {
+        console.error('Language dropdown elements not found');
+        return;
+    }
+
+    console.log('Language dropdown JavaScript initialized successfully');
+
+    // Toggle dropdown on button click
+    languageBtn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        isDropdownOpen = !isDropdownOpen;
+        console.log('Button clicked. Dropdown is now:', isDropdownOpen ? 'OPEN' : 'CLOSED');
+
+        if (isDropdownOpen) {
+            dropdownContent.classList.add('show');
+            console.log('Added "show" class');
+        } else {
+            dropdownContent.classList.remove('show');
+            console.log('Removed "show" class');
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.language-dropdown')) {
+            if (isDropdownOpen) {
+                dropdownContent.classList.remove('show');
+                isDropdownOpen = false;
+                console.log('Dropdown closed by outside click');
+            }
+        }
+    });
+
+    // Close dropdown when a language is selected
+    document.querySelectorAll('.language-dropdown-content button').forEach(button => {
+        button.addEventListener('click', function() {
+            dropdownContent.classList.remove('show');
+            isDropdownOpen = false;
+            console.log('Language selected, dropdown closed');
+        });
+    });
+
+    // Close dropdown on scroll
+    window.addEventListener('scroll', function() {
+        if (isDropdownOpen) {
+            dropdownContent.classList.remove('show');
+            isDropdownOpen = false;
+            console.log('Dropdown closed on scroll');
+        }
+    });
+});
+    </script>
+</body>
+</html>
