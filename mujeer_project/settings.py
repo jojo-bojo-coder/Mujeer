@@ -98,8 +98,12 @@ WSGI_APPLICATION = 'mujeer_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mujeer',           # Database name
+        'USER': 'mujeer_user',         # Database user
+        'PASSWORD': '1234',   # Database password
+        'HOST': 'localhost',           # Database host (use 'db' if using Docker)
+        'PORT': '5432',                # Database port (default PostgreSQL port)
     }
 }
 
