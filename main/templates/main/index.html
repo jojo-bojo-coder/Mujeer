@@ -52,162 +52,196 @@
 
         /* Navigation */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(248, 249, 250, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            height: 80px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom: 1px solid var(--neutral-medium);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(248, 249, 250, 0.97);
+    backdrop-filter: blur(25px);
+    z-index: 1000;
+    height: 85px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 1px solid rgba(212, 175, 115, 0.15);
+    box-shadow: 0 4px 20px rgba(60, 86, 100, 0.08);
+}
 
-        nav.scrolled {
-            background: rgba(248, 249, 250, 0.98);
-            height: 70px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
+nav.scrolled {
+    background: rgba(248, 249, 250, 0.98);
+    height: 75px;
+    box-shadow: 0 8px 25px rgba(60, 86, 100, 0.12);
+    border-bottom: 1px solid rgba(212, 175, 115, 0.2);
+}
 
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-            height: 100%;
-        }
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    height: 100%;
+}
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-        }
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1001;
+}
 
-        .logo-container:hover {
-            transform: scale(1.02);
-        }
+.logo-container:hover {
+    transform: translateY(-2px);
+}
 
-        .logo-image {
-            width: 180px;
-            height: 60px;
-            transition: transform 0.3s ease;
-            border-radius: 8px;
-        }
+.logo-image {
+    width: 180px;
+    height: 60px;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(60, 86, 100, 0.1);
+}
 
-        .logo-container:hover .logo-image {
-            transform: scale(1.05);
-        }
+.logo-container:hover .logo-image {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(60, 86, 100, 0.15);
+}
 
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            letter-spacing: -0.5px;
-        }
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 2.5rem;
+    flex-wrap: nowrap;
+    overflow: visible;
+    position: relative;
+}
 
-        .nav-links {
-            display: flex;
-            list-style: none;
-            align-items: center;
-            gap: 2.5rem;
-            flex-wrap: nowrap;
-            overflow: visible;
-        }
+.nav-links a {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.2rem;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+}
 
-        .nav-links a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.2rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            white-space: nowrap;
-        }
+/* New Hover Effect - Elegant Underline with Gold Accent */
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-warm));
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
 
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--accent-gold);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(212, 175, 115, 0.05), rgba(201, 160, 104, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+    z-index: -1;
+}
 
+.nav-links a:hover {
+    color: var(--primary-dark);
+    transform: translateY(-2px);
+}
 
+.nav-links a:hover::before {
+    width: 80%;
+}
 
-        .nav-links a:hover {
-            color: var(--primary-dark);
-            background: rgba(60, 86, 100, 0.05);
-            transform: translateY(-1px);
-        }
+.nav-links a:hover::after {
+    opacity: 1;
+}
 
-        .nav-links a:hover::before {
-            width: 80%;
-        }
+/* Active State - Gold Background with Elegant Shadow */
+.nav-links a.active {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-warm));
+    color: white;
+    box-shadow: 0 6px 20px rgba(212, 175, 115, 0.3);
+    transform: translateY(-2px);
+}
 
-        /* Language Dropdown */
-        .language-dropdown {
-            position: relative;
-            display: inline-block;
-            overflow: visible;
-        }
+.nav-links a.active::before {
+    width: 0;
+}
 
-        .language-btn {
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 1.2rem;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+/* Enhanced Language Dropdown */
+.language-dropdown {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
 
-        .language-btn:hover {
-            background: var(--accent-gold);
-            color: white;
-        }
+.language-btn {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+}
 
-        .language-btn::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-gold);
-            transition: width 0.3s ease;
-        }
+.language-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-warm));
+    transition: width 0.3s ease;
+}
 
-        .language-btn:hover::after {
-            width: 100%;
-        }
+.language-btn:hover {
+    color: var(--primary-dark);
+    background: rgba(212, 175, 115, 0.08);
+    transform: translateY(-1px);
+}
 
-        .language-dropdown-content {
+.language-btn:hover::after {
+    width: 100%;
+}
+
+.language-dropdown-content {
     display: none;
     position: absolute;
     background: var(--white);
     min-width: 160px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    border-radius: 12px;
     z-index: 9999;
-    top: calc(100% + 5px); /* Add 5px gap below button */
+    top: calc(100% + 8px);
     {% if LANGUAGE_CODE == 'ar' %}
     left: 0;
     right: auto;
@@ -215,42 +249,85 @@
     right: 0;
     left: auto;
     {% endif %}
-    overflow: visible; /* Add this */
-    border: 1px solid var(--neutral-medium);
+    overflow: visible;
+    border: 1px solid rgba(212, 175, 115, 0.2);
     opacity: 0;
     transform: translateY(-10px);
     transition: all 0.3s ease;
 }
 
 .language-dropdown-content.show {
-    display: block !important; /* Add !important */
-    opacity: 1 !important;     /* Add !important */
-    transform: translateY(0) !important; /* Add !important */
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
-        .language-dropdown-content form {
-            display: block;
-            width: 100%;
-        }
+.language-dropdown-content form {
+    display: block;
+    width: 100%;
+}
 
-        .language-dropdown-content button {
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+.language-dropdown-content button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 0.85rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0;
+}
 
-        .language-dropdown-content button:hover {
-            background: var(--neutral-light);
-        }
+.language-dropdown-content button:first-child {
+    border-radius: 12px 12px 0 0;
+}
+
+.language-dropdown-content button:last-child {
+    border-radius: 0 0 12px 12px;
+}
+
+.language-dropdown-content button:hover {
+    background: rgba(212, 175, 115, 0.1);
+    color: var(--primary-dark);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .nav-links {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+}
+
+/* RTL Support */
+{% if LANGUAGE_CODE == 'ar' %}
+.nav-links {
+    flex-direction: row-reverse;
+}
+
+.nav-links a {
+    text-align: right;
+}
+
+.language-dropdown-content {
+    right: auto;
+    left: 0;
+}
+{% endif %}
 
         /* Hero Section */
         .hero {
@@ -458,6 +535,13 @@
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .servicess-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2.5rem;
             margin-top: 4rem;
         }
@@ -1050,14 +1134,14 @@
                         {% endif %}</p>
                 </div>
                 <div class="about-image">
-                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}تميز فندقي{% else %}Hotel Excellence{% endif %}</div>
+                    <img src="{% static 'images/pexels-pixabay-271639.jpg' %}" alt="Hotel Excellence" class="about-image-placeholder">
                 </div>
             </div>
 
             <h3 class="section-title">{% if LANGUAGE_CODE == 'ar' %}من نحن؟{% else %}Who Are We?{% endif %}</h3>
             <div class="about-grid">
                 <div class="about-image">
-                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}فريق محترف{% else %}Professional Team{% endif %}</div>
+                    <img src="{% static 'images/pexels-olly-3771110.jpg' %}" alt="Professional Team" class="about-image-placeholder">
                 </div>
                 <div class="about-text">
                     <p>{% if LANGUAGE_CODE == 'ar' %}
@@ -1126,7 +1210,7 @@
                         {% endif %}</p>
                 </div>
                 <div class="about-image">
-                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}منتجع فاخر{% else %}Luxury Resort{% endif %}</div>
+                    <img src="{% static 'images/pexels-aj-ahamad-767001191-34188581.jpg' %}" alt="Luxury Resort" class="about-image-placeholder">
                 </div>
             </div>
         </div>
@@ -1253,8 +1337,8 @@
                 {% endif %}</p>
                 </div>
                 <div class="service-card" style="background: var(--primary-light); color: white;">
-                    <h3>{% if LANGUAGE_CODE == 'ar' %}رسالتنا{% else %}Our Mission{% endif %}</h3>
-                    <p>{% if LANGUAGE_CODE == 'ar' %}
+                    <h3 style="background: var(--primary-light); color: white;">{% if LANGUAGE_CODE == 'ar' %}رسالتنا{% else %}Our Mission{% endif %}</h3>
+                    <p style="background: var(--primary-light); color: white;">{% if LANGUAGE_CODE == 'ar' %}
                     تقديم خدمات ضيافة استثنائية تضمن رضا الضيف الكامل وتعظيم قيمة أصول الفنادق لشركائنا من خلال حلول مبتكرة ومستدامة.
                 {% else %}
                     To provide outstanding hospitality services that ensure complete guest satisfaction and maximise the value of hotel assets for our partners through innovative and sustainable solutions.
@@ -1409,7 +1493,7 @@
                     {% endif %}</p>
                 </div>
                 <div class="about-image">
-                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}التميز في الإدارة{% else %}Excellence in Management{% endif %}</div>
+                    <img src="{% static 'images/pexels-diva-plavalaguna-6147365.jpg' %}" alt="Excellence in Management" class="about-image-placeholder">
                 </div>
             </div>
         </div>
@@ -1419,7 +1503,7 @@
         <div class="container">
             <div class="about-grid" style="color: white;">
                 <div class="about-image">
-                    <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}فندق حديث{% else %}Modern Hotel{% endif %}</div>
+                    <img src="{% static 'images/pexels-quark-studio-1159039-3201921.jpg' %}" alt="Modern Hotel" class="about-image-placeholder">
                 </div>
                 <div>
                     <h3 style="color: var(--accent-gold); margin-bottom: 2rem;">{% if LANGUAGE_CODE == 'ar' %}حلول إدارة وتشغيل الفنادق{% else %}Hotel Management and Operations Solutions{% endif %}</h3>
@@ -1555,7 +1639,7 @@
                 {% endif %}</p>
             </div>
             <div class="about-image">
-                <div class="about-image-placeholder">{% if LANGUAGE_CODE == 'ar' %}الحلول والابتكار{% else %}Solutions & Innovation{% endif %}</div>
+                <img src="{% static 'images/pexels-markus-winkler-1430818-19802121.jpg' %}" alt="Solutions & Innovation" class="about-image-placeholder">
             </div>
         </div>
     </div>
@@ -1564,10 +1648,10 @@
 <section class="section stats">
     <div class="container">
         <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}مجير: شريكك للإدارة والتشغيل الفندقي المتميز{% else %}Mujair: Your Partner for Distinguished Hotel Management and Operations{% endif %}</h2>
-        <div class="services-grid">
+        <div class="servicess-grid">
             <div class="service-card" style="background: var(--primary-dark); color: white; border: none;">
                 <h3 style="color: var(--accent-gold);">{% if LANGUAGE_CODE == 'ar' %}فن الضيافة{% else %}The Art of Hospitality{% endif %}</h3>
-                <p>{% if LANGUAGE_CODE == 'ar' %}
+                <p style="color: white;">{% if LANGUAGE_CODE == 'ar' %}
                     في مجير، الضيافة ليست مجرد خدمة، بل هي فن مخصص لتقديم تجارب لا تنسى وحماية استثماراتك.
                 {% else %}
                     At Mujair, hospitality is not just a service, but an art dedicated to delivering unforgettable experiences and safeguarding your investments.
@@ -1575,7 +1659,7 @@
             </div>
             <div class="service-card" style="background: var(--primary-light); color: white; border: none;">
                 <h3 style="color: white;">{% if LANGUAGE_CODE == 'ar' %}التوازن الأمثل{% else %}Optimal Balance{% endif %}</h3>
-                <p>{% if LANGUAGE_CODE == 'ar' %}
+                <p style="color: white;">{% if LANGUAGE_CODE == 'ar' %}
                     نوازن بمهارة بين تجربة الضيف الاستثنائية والربحية المستدامة لأصحاب الفنادق.
                 {% else %}
                     We expertly balance between an exceptional guest experience and sustainable profitability for hotel owners.
@@ -1583,7 +1667,7 @@
             </div>
             <div class="service-card" style="background: var(--accent-gold); color: white; border: none;">
                 <h3 style="color: white;">{% if LANGUAGE_CODE == 'ar' %}مفاتيح التميز{% else %}Keys to Excellence{% endif %}</h3>
-                <p>{% if LANGUAGE_CODE == 'ar' %}
+                <p style="color: white;">{% if LANGUAGE_CODE == 'ar' %}
                     الاستثمار في أحدث التقنيات وتطوير القدرات البشرية يضمن نجاح العمليات والإجراءات.
                 {% else %}
                     Investing in cutting-edge technologies and developing human capabilities ensures the success of operations and procedures.
@@ -1591,7 +1675,7 @@
             </div>
             <div class="service-card" style="background: var(--primary-medium); color: white; border: none;">
                 <h3 style="color: var(--accent-gold);">{% if LANGUAGE_CODE == 'ar' %}شراكة من أجل الابتكار{% else %}Partnership for Innovation{% endif %}</h3>
-                <p>{% if LANGUAGE_CODE == 'ar' %}
+                <p style="color: white;">{% if LANGUAGE_CODE == 'ar' %}
                     ندعو إلى التعاون داخل صناعة الضيافة لتقديم حلول مبتكرة تحقق التميز المستدام.
                 {% else %}
                     We advocate for collaboration within the hospitality industry to provide innovative solutions that drive sustainable excellence.
@@ -1604,7 +1688,7 @@
     <section class="section about">
     <div class="container">
         <h2 class="section-title">{% if LANGUAGE_CODE == 'ar' %}لماذا تختار مجير؟{% else %}Why Choose Mujeer?{% endif %}</h2>
-        <div class="services-grid">
+        <div class="servicess-grid">
             <div class="service-card">
                 <h3>{% if LANGUAGE_CODE == 'ar' %}خبرة مثبتة{% else %}Proven Expertise{% endif %}</h3>
                 <p>{% if LANGUAGE_CODE == 'ar' %}
@@ -1685,7 +1769,59 @@
         <p style="opacity: 0.7;">&copy; 2025 {% if LANGUAGE_CODE == 'ar' %}شركة مجير لإدارة وتشغيل الفنادق. جميع الحقوق محفوظة.{% else %}Mujeer Hotel Management and Operations Company. All rights reserved.{% endif %}</p>
     </div>
 </footer>
+<script>
+// Enhanced Navbar Script
+document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.querySelectorAll('.nav-links a');
 
+    // Update active nav link based on scroll position
+    function updateActiveNavLink() {
+        const scrollPosition = window.scrollY + 100;
+
+        // Remove active class from all links
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // Find the section currently in view
+        let activeSection = '';
+        document.querySelectorAll('section').forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                activeSection = section.id;
+            }
+        });
+
+        // Add active class to corresponding nav link
+        if (activeSection) {
+            const activeLink = document.querySelector(`.nav-links a[href="#${activeSection}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+    }
+
+    // Initialize active nav link
+    updateActiveNavLink();
+
+    // Update active nav link on scroll
+    window.addEventListener('scroll', updateActiveNavLink);
+
+    // Add click effect to nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Add a subtle click effect
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+    });
+});
+</script>
     <script>
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
